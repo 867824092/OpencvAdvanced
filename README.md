@@ -1,0 +1,2 @@
+# OpencvAdvanced
+基于Avalonia、Opencvsharp开发的图像简单处理的桌面应用
