@@ -1,0 +1,12 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="OpencvDesktop.App">
+
+    <Application.Styles>
+        <FluentTheme Mode="Light"/>
+        <Style Selector="TextBox">
+            <Setter Property="FontFamily" Value="Microsoft YaHei,Simsun"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+    </Application.Styles>
+</Application>

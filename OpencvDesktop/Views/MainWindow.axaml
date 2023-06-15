@@ -1,0 +1,102 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:OpencvDesktop.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:opencvDesktop="clr-namespace:OpencvDesktop"
+        xmlns:openCvSharp="clr-namespace:OpenCvSharp;assembly=OpenCvSharp"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="OpencvDesktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="OpencvDesktop">
+<Window.Resources>
+    <opencvDesktop:BitmapAssetValueConverter x:Key="variableImage"/>
+</Window.Resources>
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <SplitView IsPaneOpen="True"
+               DisplayMode="Inline"
+               OpenPaneLength="296"
+    >
+        <SplitView.Pane>
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                        <Button  Command="{Binding ChangeBitmapColorCommand}">
+                            <Button.CommandParameter>
+                                <openCvSharp:ColorConversionCodes>BGR2GRAY</openCvSharp:ColorConversionCodes>
+                            </Button.CommandParameter>
+                            转换为灰色
+                        </Button>
+                        <Button  Command="{Binding ChangeBitmapColorCommand}">
+                            <Button.CommandParameter>
+                                <openCvSharp:ColorConversionCodes>BGR2BGRA</openCvSharp:ColorConversionCodes>
+                            </Button.CommandParameter>
+                            恢复原图片
+                        </Button>
+                        <Button  Command="{Binding DetectFacesCommand}">人脸检测</Button>
+                        <Button  Command="{Binding UpdateBackgroundcolorCommand}">修改底色</Button>
+                        <Button  Command="{Binding UpdateResolutionRatioCommand}">修改分辨率</Button>
+                        <Button Command="{Binding CollectVideoCommand}">采集摄像头图片</Button>
+                    </StackPanel>
+        </SplitView.Pane>
+        <Grid RowDefinitions="Auto,60,Auto">
+               <Grid Grid.Row="0" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
+                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock  VerticalAlignment="Center" Text="HMin:"></TextBlock> 
+                        <Slider Width="200" Minimum="0" Maximum="180" IsEnabled="True" 
+                                Value="{Binding Hmin,Mode=TwoWay}"></Slider>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Hmin}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" >
+                        <TextBlock  VerticalAlignment="Center" Text="SMin:"></TextBlock> 
+                        <Slider Width="200" Minimum="0" Maximum="255" IsEnabled="True"
+                                Value="{Binding Smin,Mode=TwoWay}"></Slider>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Smin}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock  VerticalAlignment="Center" Text="VMin:"></TextBlock> 
+                        <Slider Width="200" Minimum="0" Maximum="255" IsEnabled="True" 
+                                Value="{Binding Vmin,Mode=TwoWay}"></Slider>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Vmin}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock  VerticalAlignment="Center" Text="HMax:"></TextBlock> 
+                        <Slider Width="200" Minimum="0" Maximum="180" IsEnabled="True"
+                                Value="{Binding Hmax,Mode=TwoWay}"></Slider>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Hmax}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                        <TextBlock  VerticalAlignment="Center" Text="SMax:"></TextBlock> 
+                        <Slider Width="200" Minimum="0" Maximum="255" IsEnabled="True"
+                                Value="{Binding Smax,Mode=TwoWay}"></Slider>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Smax}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock  VerticalAlignment="Center" Text="VMax:"></TextBlock> 
+                        <Slider Width="200" Minimum="0" Maximum="255" IsEnabled="True"
+                                Value="{Binding Vmax,Mode=TwoWay}"></Slider>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Vmax}"></TextBlock>
+                    </StackPanel>
+               </Grid>
+               <StackPanel Grid.Row="1">
+                        <TextBox Watermark="图片路径(jpg|jpeg|png)" Text="{Binding ImagePath}"></TextBox>
+                        <Button x:Name="btn_select_img" Click="Btn_select_img_OnClick">选择图片路径</Button>
+                    </StackPanel>
+               <ScrollViewer Grid.Row="2" AllowAutoHide="True">
+                      <Grid ColumnDefinitions="*,5,*" Height="500" Margin="10">
+                        <Image Grid.Column="0" Stretch="Uniform"
+                               Source="{Binding ImagePath, Mode=TwoWay, 
+                       Converter={StaticResource variableImage}}">
+                        </Image>
+                        <Border Grid.Column="1" BorderBrush="Gray"  BorderThickness="2"></Border>
+                        <Image Grid.Column="2"  Stretch="Uniform"
+                               Source="{Binding Bitmap, Mode=TwoWay}">
+                        </Image>
+                    </Grid>
+               </ScrollViewer>
+        </Grid>
+    </SplitView>
+</Window>
